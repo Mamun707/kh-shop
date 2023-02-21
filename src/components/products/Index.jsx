@@ -1,35 +1,87 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
 import { Link } from "react-router-dom";
+
 function Products() {
   const [data, setData] = useState([]);
+  const [filter, setFilter] = useState(data);
   const [loading, setLoading] = useState(false);
   const getProducts = async () => {
     try {
       setLoading(true);
       const res = await axios.get("https://fakestoreapi.com/products");
+      setFilter(res.data);
       setData(res.data);
       setLoading(false);
     } catch (err) {
       console.log(err);
     }
   };
+  useEffect(() => {
+    getProducts();
+  }, []);
   const Loadings = () => {
-    return <div className="loading">...Loading</div>;
+    return (
+      <>
+        <div className="col-md-3">
+          <Skeleton height="350px" />
+        </div>
+        <div className="col-md-3">
+          <Skeleton height="350px" />
+        </div>
+        <div className="col-md-3">
+          <Skeleton height="350px" />
+        </div>
+        <div className="col-md-3">
+          <Skeleton height="350px" />
+        </div>
+      </>
+    );
+  };
+  const filterProducts = (cat) => {
+    const updatedList = data.filter((x) => x.category === cat);
+    console.log(updatedList);
+    setFilter(updatedList);
   };
   const ShowProducts = () => {
     return (
       <>
         <div className="buttons d-flex justify-content-center mb-5 pb-5">
-          <button className="btn btn-outline-dark me-2">All</button>
-          <button className="btn btn-outline-dark me-2">Mens Clothing</button>
-          <button className="btn btn-outline-dark me-2">Womens Clothing</button>
-          <button className="btn btn-outline-dark me-2">
+          <button
+            className="btn btn-outline-dark me-2"
+            onClick={() => {
+              setFilter(data);
+            }}
+          >
+            All
+          </button>
+          <button
+            className="btn btn-outline-dark me-2"
+            onClick={() => filterProducts("men's clothing")}
+          >
+            Mens Clothing
+          </button>
+          <button
+            className="btn btn-outline-dark me-2"
+            onClick={() => filterProducts("women's clothing")}
+          >
+            Womens Clothing
+          </button>
+          <button
+            className="btn btn-outline-dark me-2"
+            onClick={() => filterProducts("jewelery")}
+          >
             Jwelery Clothing
           </button>
-          <button className="btn btn-outline-dark me-2">Electronics</button>
+          <button
+            className="btn btn-outline-dark me-2"
+            onClick={() => filterProducts("electronics")}
+          >
+            Electronics
+          </button>
         </div>
-        {data.map((product) => {
+        {filter.map((product) => {
           return (
             <div className="col-md-3 mb-4" key={product.id}>
               <div
@@ -59,9 +111,6 @@ function Products() {
     );
   };
 
-  useEffect(() => {
-    getProducts();
-  }, []);
   return (
     <div className="container my-5 py-5">
       <div className="row">

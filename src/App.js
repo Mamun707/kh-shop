@@ -1,3 +1,4 @@
+import 'react-loading-skeleton/dist/skeleton.css';
 import './App.css';
 import Layout from './layouts/Index';
 
