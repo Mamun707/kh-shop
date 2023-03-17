@@ -99,7 +99,10 @@ function Products() {
                     {product.title.substring(0, 11)}...
                   </h5>
                   <p className="card-text lead fw-bold">${product.price}</p>
-                  <Link to="#" className="btn btn-outline-dark">
+                  <Link
+                    to={`/productdetails/${product.id}`}
+                    className="btn btn-outline-dark"
+                  >
                     Buy Now{" "}
                   </Link>
                 </div>
